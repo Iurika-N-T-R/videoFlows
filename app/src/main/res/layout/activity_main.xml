@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#383838">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Tap + to add videos"
+            android:textColor="#ddd"
+            android:textSize="16sp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:paddingHorizontal="16dp">
+
+            <ImageView
+                android:id="@+id/live"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:contentDescription="Open LIVE"
+                android:src="@drawable/ic_live" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <TextView android:id="@+id/following" style="@style/Tab" android:text="Following" />
+                <TextView android:id="@+id/foryou" style="@style/Tab" android:text="For You" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/search"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:contentDescription="Search"
+                android:src="@drawable/ic_search" />
+        </FrameLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:paddingVertical="4dp">
+
+        <TextView android:id="@+id/nav_home" style="@style/Nav" android:drawableTop="@drawable/ic_home" android:text="Home" android:textStyle="bold" />
+        <TextView android:id="@+id/nav_discover" style="@style/Nav" android:drawableTop="@drawable/ic_discover" android:text="Discover" />
+        <FrameLayout style="@style/Nav">
+            <TextView
+                android:id="@+id/nav_create"
+                android:layout_width="46dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/plus_nav"
+                android:contentDescription="Add videos"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="#111"
+                android:textSize="24sp" />
+        </FrameLayout>
+        <TextView android:id="@+id/nav_inbox" style="@style/Nav" android:drawableTop="@drawable/ic_inbox" android:text="Inbox" />
+        <TextView android:id="@+id/nav_profile" style="@style/Nav" android:drawableTop="@drawable/ic_profile" android:text="Profile" />
+    </LinearLayout>
+</LinearLayout>

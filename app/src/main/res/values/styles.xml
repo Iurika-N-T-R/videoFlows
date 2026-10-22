@@ -1,0 +1,32 @@
+<resources>
+    <style name="Shadow">
+        <item name="android:textColor">#fff</item>
+        <item name="android:shadowColor">#c0000000</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+    <style name="Rail" parent="Shadow">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">14dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="Nav">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+    <style name="Tab" parent="Shadow">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">11dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:drawablePadding">6dp</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+</resources>
