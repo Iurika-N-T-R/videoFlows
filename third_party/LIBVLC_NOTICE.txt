@@ -1,0 +1,15 @@
+vidéoflows uses libVLC (https://code.videolan.org/videolan/vlc-android),
+distributed by VideoLAN as the Maven package org.videolan.android:libvlc-all.
+
+libVLC is free software licensed under the GNU Lesser General Public License,
+version 2.1 or later (full text in LIBVLC_LICENSE.txt in this folder).
+Its source code is available at:
+  https://code.videolan.org/videolan/vlc
+  https://code.videolan.org/videolan/vlc-android
+
+vidéoflows links to libVLC as an unmodified, separate library. You can replace
+it with your own build by changing the libvlc-all dependency in
+app/build.gradle.kts and rebuilding the app.
+
+VLC and the VLC cone are trademarks of VideoLAN. vidéoflows is not affiliated
+with or endorsed by VideoLAN.

@@ -1,7 +1,13 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
+
+// Release signing, from keystore.properties (git-ignored, kept next to the key outside the repo).
+// Without it, release builds come out unsigned.
+val keystore = rootProject.file("keystore.properties").takeIf { it.exists() }?.let { f -> Properties().apply { f.inputStream().use(::load) } }
 
 android {
     namespace = "com.videoflows"
@@ -14,6 +20,22 @@ android {
         versionName = "0.0.1"
         // ponytail: 64-bit only keeps the APK small; add "armeabi-v7a" (or ABI splits) for old 32-bit phones
         ndk { abiFilters += listOf("arm64-v8a", "x86_64") }
+    }
+    signingConfigs {
+        if (keystore != null) create("release") {
+            storeFile = file(keystore.getProperty("storeFile"))
+            storePassword = keystore.getProperty("storePassword")
+            keyAlias = keystore.getProperty("keyAlias")
+            keyPassword = keystore.getProperty("keyPassword")
+        }
+    }
+    buildTypes {
+        release { signingConfig = signingConfigs.findByName("release") }
+    }
+    // F-Droid and reproducible builds: no Google-only blobs in the APK
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
