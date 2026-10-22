@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Tap + to add videos"
+            android:text="Tap + to add folders"
             android:textColor="#ddd"
             android:textSize="16sp" />
 
@@ -72,7 +72,7 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:background="@drawable/plus_nav"
-                android:contentDescription="Add videos"
+                android:contentDescription="Folders"
                 android:gravity="center"
                 android:text="+"
                 android:textColor="#111"

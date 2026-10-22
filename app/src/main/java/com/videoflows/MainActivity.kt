@@ -7,7 +7,8 @@ import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
-import android.provider.OpenableColumns
+import android.provider.DocumentsContract
+import android.provider.DocumentsContract.Document
 import android.util.AtomicFile
 import android.view.View
 import android.view.ViewGroup
@@ -24,8 +25,9 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 
-private const val PICK = 1
 private const val EXPORT = 2
+private const val ADD_FOLDER = 3
+private const val EXCLUDE_FOLDER = 4
 private const val PINK = 0xffff315c.toInt()
 private const val GOLD = 0xffffd96a.toInt()
 private const val WHITE = 0xffffffff.toInt()
@@ -41,10 +43,15 @@ class MainActivity : Activity() {
         fun toJson(): JSONObject = JSONObject().put("uri", uri.toString()).put("title", title)
             .put("liked", liked).put("saved", saved).put("following", following).put("reposted", reposted)
             .put("comments", JSONArray(comments))
+
+        fun hasState() = liked || saved || following || reposted || comments.isNotEmpty()
     }
 
     private val clips = mutableListOf<Clip>()
-    // The whole feed (videos + likes/saves/comments) as JSON; AtomicFile so a crash mid-write can't corrupt it
+    private val folders = mutableListOf<Uri>()   // folder trees scanned for videos, subfolders included
+    private val excluded = mutableListOf<Uri>()  // subfolders skipped while scanning
+    private val known = mutableMapOf<Uri, Clip>() // likes/comments survive rescans and excluded folders
+    // Folders + likes/saves/comments as JSON; AtomicFile so a crash mid-write can't corrupt it
     private val store by lazy { AtomicFile(File(filesDir, "feed.json")) }
     private lateinit var vlc: LibVLC
     private lateinit var player: MediaPlayer
@@ -64,7 +71,7 @@ class MainActivity : Activity() {
             override fun onPageSelected(position: Int) { pager.post { play(position) } }
         })
         load()
-        refresh()
+        scan()
 
         val following = findViewById<TextView>(R.id.following)
         val forYou = findViewById<TextView>(R.id.foryou)
@@ -79,65 +86,110 @@ class MainActivity : Activity() {
         following.setOnClickListener { selectTab(following, forYou, "Follow creators to fill your feed") }
         forYou.setOnClickListener { selectTab(forYou, following, "For You feed") }
 
-        findViewById<View>(R.id.nav_create).setOnClickListener { pick() }
+        findViewById<View>(R.id.nav_create).setOnClickListener { showFolders() }
         findViewById<View>(R.id.nav_home).setOnClickListener { if (clips.isNotEmpty()) pager.currentItem = 0 }
         findViewById<View>(R.id.nav_profile).setOnClickListener { showProfile() }
         mapOf(R.id.live to "LIVE", R.id.search to "Search", R.id.nav_discover to "Discover", R.id.nav_inbox to "Inbox")
             .forEach { (id, name) -> findViewById<View>(id).setOnClickListener { toast("$name — coming soon") } }
     }
 
-    private fun pick() = startActivityForResult(
-        Intent(Intent.ACTION_OPEN_DOCUMENT).setType("video/*").addCategory(Intent.CATEGORY_OPENABLE)
-            .putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true), PICK)
+    private fun label(tree: Uri) = DocumentsContract.getTreeDocumentId(tree).substringAfter(':').ifEmpty { "Storage" }
+
+    private fun showFolders() {
+        val rows = folders.map { "📁  ${label(it)}" } + excluded.map { "⛔  ${label(it)}" }
+        AlertDialog.Builder(this)
+            .setTitle(if (rows.isEmpty()) "Add a folder to scan" else "Folders — tap to remove")
+            .setItems(rows.toTypedArray()) { _, i ->
+                if (i < folders.size) runCatching {
+                    contentResolver.releasePersistableUriPermission(folders.removeAt(i), Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                } else excluded.removeAt(i - folders.size)
+                save()
+                scan()
+            }
+            .setPositiveButton("Add") { _, _ -> startActivityForResult(Intent(Intent.ACTION_OPEN_DOCUMENT_TREE), ADD_FOLDER) }
+            .setNeutralButton("Exclude") { _, _ -> startActivityForResult(Intent(Intent.ACTION_OPEN_DOCUMENT_TREE), EXCLUDE_FOLDER) }
+            .setNegativeButton("Close", null)
+            .show()
+    }
+
+    // Walks the folders off the UI thread, then swaps the feed in one go
+    private fun scan() {
+        val trees = folders.toList()
+        val skip = excluded.map { DocumentsContract.getTreeDocumentId(it) }.toSet()
+        Thread {
+            val found = mutableListOf<Pair<Uri, String>>()
+            trees.forEach { walk(it, DocumentsContract.getTreeDocumentId(it), skip, found) }
+            runOnUiThread {
+                clips.clear()
+                found.forEach { (uri, name) -> clips += known.getOrPut(uri) { Clip(uri, name.substringBeforeLast('.')) } }
+                playing = -1
+                if (clips.isEmpty()) { player.stop(); player.detachViews() }
+                refresh()
+            }
+        }.start()
+    }
+
+    private fun walk(tree: Uri, dir: String, skip: Set<String>, out: MutableList<Pair<Uri, String>>) {
+        if (dir in skip) return
+        val cols = arrayOf(Document.COLUMN_DOCUMENT_ID, Document.COLUMN_DISPLAY_NAME, Document.COLUMN_MIME_TYPE)
+        // A folder that vanished or lost its permission just yields nothing
+        runCatching { contentResolver.query(DocumentsContract.buildChildDocumentsUriUsingTree(tree, dir), cols, null, null, null) }
+            .getOrNull()?.use { c ->
+                while (c.moveToNext()) {
+                    val id = c.getString(0)
+                    val mime = c.getString(2).orEmpty()
+                    if (mime == Document.MIME_TYPE_DIR) walk(tree, id, skip, out)
+                    else if (mime.startsWith("video/")) out += DocumentsContract.buildDocumentUriUsingTree(tree, id) to c.getString(1)
+                }
+            }
+    }
 
     @Deprecated("Activity API")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_OK || data == null) return
-        if (requestCode == EXPORT) {
-            runCatching { contentResolver.openOutputStream(data.data!!)!!.use { it.write(feedJson().toByteArray()) } }
+        val tree = data.data ?: return
+        when (requestCode) {
+            EXPORT -> runCatching { contentResolver.openOutputStream(tree)!!.use { it.write(feedJson().toByteArray()) } }
                 .onSuccess { toast("Exported") }.onFailure { toast("Export failed") }
-            return
+            ADD_FOLDER -> {
+                contentResolver.takePersistableUriPermission(tree, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                if (tree !in folders) folders += tree
+            }
+            EXCLUDE_FOLDER -> if (tree !in excluded) excluded += tree
         }
-        if (requestCode != PICK) return
-        val uris = data.clipData?.let { cd -> (0 until cd.itemCount).map { cd.getItemAt(it).uri } } ?: listOfNotNull(data.data)
-        uris.forEach {
-            contentResolver.takePersistableUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            add(it)
-        }
-        save()
-        refresh()
-    }
-
-    private fun add(uri: Uri): Clip? {
-        if (clips.any { it.uri == uri }) return null
-        // Dropped silently if the document was deleted or its permission revoked since last launch
-        val title = runCatching {
-            contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)!!
-                .use { it.moveToFirst(); it.getString(0) }
-        }.getOrNull() ?: return null
-        return Clip(uri, title.substringBeforeLast('.')).also { clips += it }
+        if (requestCode != EXPORT) { save(); scan() }
     }
 
     private fun feedJson() = JSONArray(clips.map { it.toJson() }).toString(2)
 
+    private fun JSONArray.strings() = (0 until length()).map { getString(it) }
+
     private fun save() {
+        val json = JSONObject()
+            .put("folders", JSONArray(folders.map { it.toString() }))
+            .put("excluded", JSONArray(excluded.map { it.toString() }))
+            .put("clips", JSONArray(known.values.filter { it.hasState() }.map { it.toJson() }))
         val out = store.startWrite()
-        runCatching { out.write(feedJson().toByteArray()); store.finishWrite(out) }
+        runCatching { out.write(json.toString(2).toByteArray()); store.finishWrite(out) }
             .onFailure { store.failWrite(out); toast("Couldn't save") }
     }
 
     private fun load() {
-        val feed = runCatching { JSONArray(String(store.readFully())) }.getOrNull() ?: return
-        for (i in 0 until feed.length()) {
-            val o = feed.getJSONObject(i)
-            add(Uri.parse(o.getString("uri")))?.apply {
+        val json = runCatching { JSONObject(String(store.readFully())) }.getOrNull() ?: return
+        json.optJSONArray("folders")?.strings()?.mapTo(folders, Uri::parse)
+        json.optJSONArray("excluded")?.strings()?.mapTo(excluded, Uri::parse)
+        val saved = json.optJSONArray("clips") ?: return
+        for (i in 0 until saved.length()) {
+            val o = saved.getJSONObject(i)
+            val clip = Clip(Uri.parse(o.getString("uri")), o.getString("title")).apply {
                 liked = o.optBoolean("liked")
-                saved = o.optBoolean("saved")
+                this.saved = o.optBoolean("saved")
                 following = o.optBoolean("following")
                 reposted = o.optBoolean("reposted")
-                o.optJSONArray("comments")?.let { a -> (0 until a.length()).mapTo(comments) { a.getString(it) } }
+                o.optJSONArray("comments")?.strings()?.let(comments::addAll)
             }
+            known[clip.uri] = clip
         }
     }
 

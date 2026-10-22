@@ -8,7 +8,7 @@ Free, open-source vertical video feed for Android, for the videos on your phone.
 vidéoflows is an independent app written from scratch. It is not affiliated with any short-video platform, nor with VideoLAN.
 
 ## Using it
-- Tap **+** to add videos from your phone. They stay in the feed between launches.
+- Tap **+** to manage folders: **Add** a folder to scan (subfolders included), **Exclude** a subfolder to skip it, tap a folder to remove it. Folders are rescanned at every launch.
 - Swipe **up** for the next video, **down** for the previous one. Videos loop; tap to pause or resume.
 - Like, save, follow, repost and comment on each video. Everything is kept on your phone.
 - **Profile → Export** saves the whole feed (titles, likes, saves, comments) as a JSON file.
