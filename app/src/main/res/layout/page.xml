@@ -17,7 +17,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/repost"
+            android:id="@+id/speed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -38,12 +38,22 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/music"
+            android:id="@+id/tags"
+            style="@style/Shadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/folder"
             style="@style/Shadow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:drawableStart="@drawable/ic_music"
+            android:drawableStart="@drawable/ic_folder"
             android:drawablePadding="5dp"
             android:ellipsize="end"
             android:singleLine="true"
@@ -63,16 +73,20 @@
             android:layout_width="52dp"
             android:layout_height="60dp">
 
-            <View
-                android:id="@+id/creator"
+            <TextView
+                android:id="@+id/folder_avatar"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/avatar"
-                android:contentDescription="View creator" />
+                android:gravity="center"
+                android:paddingBottom="4dp"
+                android:textColor="#fff"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/follow"
+                android:id="@+id/folder_badge"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_gravity="bottom|center_horizontal"
@@ -82,15 +96,15 @@
         </FrameLayout>
 
         <TextView android:id="@+id/like" style="@style/Rail" android:drawableTop="@drawable/ic_heart" />
-        <TextView android:id="@+id/comments" style="@style/Rail" android:drawableTop="@drawable/ic_comment" />
-        <TextView android:id="@+id/save" style="@style/Rail" android:drawableTop="@drawable/ic_bookmark" />
+        <TextView android:id="@+id/notes" style="@style/Rail" android:drawableTop="@drawable/ic_comment" />
+        <TextView android:id="@+id/tag" style="@style/Rail" android:drawableTop="@drawable/ic_tag" />
 
-        <View
-            android:id="@+id/disc"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
+        <ImageView
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@drawable/disc"
-            android:contentDescription="Original sound" />
+            android:contentDescription="Video info"
+            android:src="@drawable/ic_info" />
     </LinearLayout>
 </FrameLayout>

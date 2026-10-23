@@ -33,19 +33,19 @@
             android:paddingHorizontal="16dp">
 
             <ImageView
-                android:id="@+id/live"
+                android:id="@+id/shuffle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:contentDescription="Open LIVE"
-                android:src="@drawable/ic_live" />
+                android:contentDescription="Shuffle"
+                android:src="@drawable/ic_shuffle" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center">
 
-                <TextView android:id="@+id/following" style="@style/Tab" android:text="Following" />
-                <TextView android:id="@+id/foryou" style="@style/Tab" android:text="For You" />
+                <TextView android:id="@+id/favorites" style="@style/Tab" android:text="Favorites" />
+                <TextView android:id="@+id/all" style="@style/Tab" android:text="All" />
             </LinearLayout>
 
             <ImageView
@@ -56,6 +56,23 @@
                 android:contentDescription="Search"
                 android:src="@drawable/ic_search" />
         </FrameLayout>
+
+        <!-- Active folder / tag / search filter; tap to clear -->
+        <TextView
+            android:id="@+id/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="58dp"
+            android:background="@drawable/pill"
+            android:maxWidth="300dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="5dp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textColor="#fff"
+            android:textSize="13sp"
+            android:visibility="gone" />
     </FrameLayout>
 
     <LinearLayout
@@ -64,7 +81,7 @@
         android:paddingVertical="4dp">
 
         <TextView android:id="@+id/nav_home" style="@style/Nav" android:drawableTop="@drawable/ic_home" android:text="Home" android:textStyle="bold" />
-        <TextView android:id="@+id/nav_discover" style="@style/Nav" android:drawableTop="@drawable/ic_discover" android:text="Discover" />
+        <TextView android:id="@+id/nav_tags" style="@style/Nav" android:drawableTop="@drawable/ic_tag" android:text="Tags" />
         <FrameLayout style="@style/Nav">
             <TextView
                 android:id="@+id/nav_create"
@@ -78,7 +95,7 @@
                 android:textColor="#111"
                 android:textSize="24sp" />
         </FrameLayout>
-        <TextView android:id="@+id/nav_inbox" style="@style/Nav" android:drawableTop="@drawable/ic_inbox" android:text="Inbox" />
-        <TextView android:id="@+id/nav_profile" style="@style/Nav" android:drawableTop="@drawable/ic_profile" android:text="Profile" />
+        <TextView android:id="@+id/nav_recent" style="@style/Nav" android:drawableTop="@drawable/ic_history" android:text="Recent" />
+        <TextView android:id="@+id/nav_library" style="@style/Nav" android:drawableTop="@drawable/ic_tune" android:text="Library" />
     </LinearLayout>
 </LinearLayout>

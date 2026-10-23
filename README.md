@@ -1,6 +1,6 @@
 # vidéoflows
 
-Free, open-source vertical video feed for Android, for the videos on your phone.
+Free, open-source offline video player for Android: your own videos in a vertical swipe feed.
 
 [![license](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![release](https://img.shields.io/github/v/release/Iurika-N-T-R/videoflows?style=flat-square)](../../releases/latest)
@@ -8,10 +8,26 @@ Free, open-source vertical video feed for Android, for the videos on your phone.
 vidéoflows is an independent app written from scratch. It is not affiliated with any short-video platform, nor with VideoLAN.
 
 ## Using it
-- Tap **+** to manage folders: **Add** a folder to scan (subfolders included), **Exclude** a subfolder to skip it, tap a folder to remove it. Folders are rescanned at every launch.
-- Swipe **up** for the next video, **down** for the previous one. Videos loop; tap to pause or resume.
-- Like, save, follow, repost and comment on each video. Everything is kept on your phone.
-- **Profile → Export** saves the whole feed (titles, likes, saves, comments) as a JSON file.
+Swipe **up** for the next video, **down** for the previous one. Videos loop; tap to pause or resume.
+
+**Top bar**
+- **Shuffle** (left): plays the feed in random order.
+- **Favorites / All**: only your favorites, or everything.
+- **Search** (right): matches title, folder, tags and notes. The pill under the bar shows active filters; tap it to clear them.
+
+**On each video**
+- **Folder** (round button): show only this folder (✓ when active).
+- **♥**: add to favorites.
+- **Notes**: your own notes on the video.
+- **Tags**: tag the video. Ratio (9:16, 16:9…) and resolution (4K, 1080p, 720p, SD) are tagged automatically.
+- **ⓘ**: resolution, ratio, frame rate, codec, duration, size.
+- **▶ 1×** pill: playback speed (1×, 1.5×, 2×, 0.5×).
+
+**Bottom bar**
+- **Tags**: pick several tags to see videos that have all of them (e.g. `#9:16` + `#3D`).
+- **+**: folders. **Add** a folder to scan (subfolders included), **Exclude** a subfolder, tap one to remove it. Rescanned at every launch.
+- **Recent**: what you watched last.
+- **Library**: stats, **Rescan**, **Export** everything as JSON.
 
 ## Install
 Download the APK from the [latest release](../../releases/latest). Needs Android 7.0+ on a 64-bit device.
