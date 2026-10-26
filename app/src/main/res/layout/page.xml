@@ -2,39 +2,49 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#383838">
+    android:background="#161618">
 
     <org.videolan.libvlc.util.VLCVideoLayout
         android:id="@+id/video"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <View android:layout_width="match_parent" android:layout_height="160dp" android:background="@drawable/shade_top" />
+    <View android:layout_width="match_parent" android:layout_height="300dp" android:layout_gravity="bottom" android:background="@drawable/shade_bottom" />
+
     <LinearLayout
-        android:layout_width="260dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_margin="16dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="78dp"
+        android:layout_marginBottom="24dp"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/speed"
+            android:id="@+id/folder"
+            style="@style/Shadow"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/pill"
-            android:paddingHorizontal="9dp"
-            android:paddingVertical="4dp"
-            android:textColor="#fff"
-            android:textSize="14sp" />
+            android:layout_height="30dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/chip_dark"
+            android:drawableStart="@drawable/ic_folder"
+            android:drawablePadding="6dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="10dp"
+            android:singleLine="true"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/caption"
             style="@style/Shadow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLines="3"
             android:ellipsize="end"
-            android:textSize="14sp"
+            android:maxLines="2"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
@@ -42,30 +52,55 @@
             style="@style/Shadow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:maxLines="2"
+            android:layout_marginTop="5dp"
             android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="#D9FFFFFF"
             android:textSize="13sp" />
 
-        <TextView
-            android:id="@+id/folder"
-            style="@style/Shadow"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:drawableStart="@drawable/ic_folder"
-            android:drawablePadding="5dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textSize="13sp" />
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/speed"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/pill"
+                android:contentDescription="Vitesse"
+                android:gravity="center"
+                android:paddingHorizontal="10dp"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/mute"
+                android:layout_width="38dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/pill"
+                android:padding="6dp" />
+
+            <TextView
+                android:id="@+id/count"
+                style="@style/Shadow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#B3FFFFFF"
+                android:textSize="12sp" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="90dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -75,36 +110,29 @@
 
             <TextView
                 android:id="@+id/folder_avatar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/avatar"
                 android:gravity="center"
-                android:paddingBottom="4dp"
-                android:textColor="#fff"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/folder_badge"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="2dp"
                 android:background="@drawable/follow"
                 android:gravity="center"
-                android:textSize="16sp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
         </FrameLayout>
 
-        <TextView android:id="@+id/like" style="@style/Rail" android:drawableTop="@drawable/ic_heart" />
-        <TextView android:id="@+id/notes" style="@style/Rail" android:drawableTop="@drawable/ic_comment" />
-        <TextView android:id="@+id/tag" style="@style/Rail" android:drawableTop="@drawable/ic_tag" />
-
-        <ImageView
-            android:id="@+id/info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:contentDescription="Video info"
-            android:src="@drawable/ic_info" />
+        <TextView android:id="@+id/like" style="@style/Rail" android:drawableTop="@drawable/ic_heart" android:contentDescription="Favori" />
+        <TextView android:id="@+id/notes" style="@style/Rail" android:drawableTop="@drawable/ic_comment" android:contentDescription="Notes" />
+        <TextView android:id="@+id/tag" style="@style/Rail" android:drawableTop="@drawable/ic_tag" android:contentDescription="Tags" />
+        <TextView android:id="@+id/info" style="@style/Rail" android:drawableTop="@drawable/ic_info" android:text="Infos" android:contentDescription="Infos" />
     </LinearLayout>
 </FrameLayout>

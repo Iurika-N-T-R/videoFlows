@@ -7,10 +7,10 @@
     android:orientation="vertical">
 
     <FrameLayout
+        android:id="@+id/stage"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#383838">
+        android:layout_weight="1">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/pager"
@@ -23,65 +23,126 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Tap + to add folders"
-            android:textColor="#ddd"
-            android:textSize="16sp" />
+            android:gravity="center"
+            android:padding="40dp"
+            android:textColor="#A8A8B3"
+            android:textSize="15sp" />
 
-        <FrameLayout
+        <!-- Shown while paused -->
+        <ImageView
+            android:id="@+id/paused"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:background="@drawable/round_dark"
+            android:importantForAccessibility="no"
+            android:padding="22dp"
+            android:src="@drawable/ic_play"
+            android:visibility="gone" />
+
+        <!-- Double-tap favorite burst -->
+        <ImageView
+            android:id="@+id/burst"
+            android:layout_width="96dp"
+            android:layout_height="90dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_heart"
+            android:tint="#FE2C55"
+            android:visibility="gone" />
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:paddingHorizontal="16dp">
+            android:layout_height="64dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="10dp">
 
             <ImageView
-                android:id="@+id/shuffle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:contentDescription="Shuffle"
-                android:src="@drawable/ic_shuffle" />
+                android:id="@+id/order"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:contentDescription="Ordre de lecture"
+                android:padding="9dp"
+                android:src="@drawable/ic_smart" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center">
+                android:layout_weight="1"
+                android:gravity="center">
 
-                <TextView android:id="@+id/favorites" style="@style/Tab" android:text="Favorites" />
-                <TextView android:id="@+id/all" style="@style/Tab" android:text="All" />
+                <TextView android:id="@+id/all" style="@style/Tab" android:text="Pour toi" />
+                <TextView android:id="@+id/favorites" style="@style/Tab" android:text="Favoris" />
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/search"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:contentDescription="Search"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:contentDescription="Rechercher"
+                android:padding="9dp"
                 android:src="@drawable/ic_search" />
-        </FrameLayout>
+        </LinearLayout>
 
-        <!-- Active folder / tag / search filter; tap to clear -->
-        <TextView
-            android:id="@+id/filter"
-            android:layout_width="wrap_content"
+        <!-- Active filter pill, or the "resume" card -->
+        <FrameLayout
+            android:id="@+id/ctx"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|center_horizontal"
-            android:layout_marginTop="58dp"
-            android:background="@drawable/pill"
-            android:maxWidth="300dp"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="5dp"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:textColor="#fff"
-            android:textSize="13sp"
+            android:layout_marginTop="62dp"
+            android:paddingHorizontal="14dp" />
+
+        <TextView
+            android:id="@+id/scrubtime"
+            style="@style/Shadow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="50dp"
+            android:gravity="center"
+            android:textSize="26sp"
+            android:textStyle="bold"
             android:visibility="gone" />
+
+        <SeekBar
+            android:id="@+id/scrub"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom"
+            android:contentDescription="Position de lecture"
+            android:max="1000"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:progressBackgroundTint="#55FFFFFF"
+            android:progressTint="#FFFFFF"
+            android:thumbTint="#FFFFFF" />
+
+        <!-- Explorer / Récents / Bibliothèque -->
+        <ScrollView
+            android:id="@+id/pages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#000"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/pagebody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp" />
+        </ScrollView>
     </FrameLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#14FFFFFF" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="58dp"
+        android:layout_height="60dp"
         android:paddingVertical="4dp">
 
-        <TextView android:id="@+id/nav_home" style="@style/Nav" android:drawableTop="@drawable/ic_home" android:text="Home" android:textStyle="bold" />
-        <TextView android:id="@+id/nav_tags" style="@style/Nav" android:drawableTop="@drawable/ic_tag" android:text="Tags" />
+        <TextView android:id="@+id/nav_home" style="@style/Nav" android:drawableTop="@drawable/ic_home" android:text="Accueil" />
+        <TextView android:id="@+id/nav_explore" style="@style/Nav" android:drawableTop="@drawable/ic_compass" android:text="Explorer" />
         <FrameLayout style="@style/Nav">
             <TextView
                 android:id="@+id/nav_create"
@@ -89,13 +150,13 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:background="@drawable/plus_nav"
-                android:contentDescription="Folders"
+                android:contentDescription="Ajouter un dossier"
                 android:gravity="center"
                 android:text="+"
                 android:textColor="#111"
                 android:textSize="24sp" />
         </FrameLayout>
-        <TextView android:id="@+id/nav_recent" style="@style/Nav" android:drawableTop="@drawable/ic_history" android:text="Recent" />
-        <TextView android:id="@+id/nav_library" style="@style/Nav" android:drawableTop="@drawable/ic_tune" android:text="Library" />
+        <TextView android:id="@+id/nav_recent" style="@style/Nav" android:drawableTop="@drawable/ic_history" android:text="Récents" />
+        <TextView android:id="@+id/nav_library" style="@style/Nav" android:drawableTop="@drawable/ic_tune" android:text="Biblio" />
     </LinearLayout>
 </LinearLayout>

@@ -8,26 +8,25 @@ Free, open-source offline video player for Android: your own videos in a vertica
 vidéoflows is an independent app written from scratch. It is not affiliated with any short-video platform, nor with VideoLAN.
 
 ## Using it
-Swipe **up** for the next video, **down** for the previous one. Videos loop; tap to pause or resume.
+Swipe **up** for the next video, **down** for the previous one. Tap to pause, **double-tap** to add to favorites, drag the bar at the bottom to seek.
 
 **Top bar**
-- **Shuffle** (left): plays the feed in random order.
-- **Favorites / All**: only your favorites, or everything.
-- **Search** (right): matches title, folder, tags and notes. The pill under the bar shows active filters; tap it to clear them.
+- **Play order** (left): smart mix (unseen first, then least recently watched), random, unseen only, newest, oldest, name A→Z.
+- **Pour toi / Favoris**: everything, or only your favorites.
+- **Search** (right): live results on title, folder, tags and notes; play all the results as a feed. The pill under the bar shows the active filter; ✕ clears it.
+- At launch, a card offers to **resume** the last video where you left it.
 
 **On each video**
-- **Folder** (round button): show only this folder (✓ when active).
-- **♥**: add to favorites.
-- **Notes**: your own notes on the video.
-- **Tags**: tag the video. Ratio (9:16, 16:9…) and resolution (4K, 1080p, 720p, SD) are tagged automatically.
-- **ⓘ**: resolution, ratio, frame rate, codec, duration, size.
-- **▶ 1×** pill: playback speed (1×, 1.5×, 2×, 0.5×).
+- **Folder** (round button or folder chip): play only this folder.
+- **♥**: favorite. **Notes**: notes pinned to the current time; tap a timestamp to jump back to it. **Tags**: your tags plus automatic ones (ratio 9:16, 16:9…, resolution 4K, 1080p, 720p, SD).
+- **Infos**: resolution, frame rate, codec, duration, size, date; play the whole folder, restart, or hide the video from the feed.
+- **▶ 1×** pill: playback speed (1×, 1.5×, 2×, 0.5×). Speaker: mute.
 
 **Bottom bar**
-- **Tags**: pick several tags to see videos that have all of them (e.g. `#9:16` + `#3D`).
-- **+**: folders. **Add** a folder to scan (subfolders included), **Exclude** a subfolder, tap one to remove it. Rescanned at every launch.
-- **Recent**: what you watched last.
-- **Library**: stats, **Rescan**, **Export** everything as JSON.
+- **Explorer**: unseen, short (≤30 s), with notes, favorites; every folder; every tag (or combine several).
+- **+**: add a folder to scan (subfolders included).
+- **Récents**: what you watched, by day, with resume.
+- **Biblio**: stats; folders (switch one off to leave it out of the feed, trash to remove it, ignore a subfolder); hidden videos; playback settings (order at launch, autoplay next, loop, remember position, start muted); rescan; export favorites, tags and notes as JSON.
 
 ## Install
 Download the APK from the [latest release](../../releases/latest). Needs Android 7.0+ on a 64-bit device.
