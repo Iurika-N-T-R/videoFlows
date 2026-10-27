@@ -10,10 +10,10 @@ plugins {
 val keystore = rootProject.file("keystore.properties").takeIf { it.exists() }?.let { f -> Properties().apply { f.inputStream().use(::load) } }
 
 android {
-    namespace = "com.videoflows"
+    namespace = "com.iurika.videoflows"
     compileSdk = 36
     defaultConfig {
-        applicationId = "com.videoflows"
+        applicationId = "com.iurika.videoflows"
         minSdk = 24
         targetSdk = 35
         versionCode = 5

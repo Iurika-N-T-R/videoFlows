@@ -1,11 +1,11 @@
-# vidéoflows
+# vidéoFlows
 
 Free, open-source offline video player for Android: your own videos in a vertical swipe feed.
 
 [![license](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![release](https://img.shields.io/github/v/release/Iurika-N-T-R/videoflows?style=flat-square)](../../releases/latest)
 
-vidéoflows is an independent app written from scratch. It is not affiliated with any short-video platform, nor with VideoLAN.
+vidéoFlows is an independent app written from scratch. It is not affiliated with any short-video platform, nor with VideoLAN.
 
 ## Using it
 Swipe **up** for the next video, **down** for the previous one. Tap to pause, **double-tap** to add to favorites, drag the bar at the bottom to seek.
@@ -39,5 +39,5 @@ Needs JDK 17–21 and the Android SDK (platform 36).
 Release builds are signed only if a `keystore.properties` file sits at the project root (git-ignored); otherwise they come out unsigned.
 
 ## Licenses
-vidéoflows is MIT-licensed (see [LICENSE](LICENSE)).
+vidéoFlows is MIT-licensed (see [LICENSE](LICENSE)).
 Video playback uses [libVLC](https://code.videolan.org/videolan/vlc-android), licensed under the LGPL 2.1+; see [third_party/LIBVLC_NOTICE.txt](third_party/LIBVLC_NOTICE.txt).

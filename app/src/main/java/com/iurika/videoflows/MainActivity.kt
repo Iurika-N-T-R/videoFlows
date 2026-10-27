@@ -1,4 +1,4 @@
-package com.videoflows
+package com.iurika.videoflows
 
 import android.app.Activity
 import android.app.AlertDialog
