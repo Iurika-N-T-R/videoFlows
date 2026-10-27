@@ -3,7 +3,7 @@
 Free, open-source offline video player for Android: your own videos in a vertical swipe feed.
 
 [![license](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
-[![release](https://img.shields.io/github/v/release/Iurika-N-T-R/videoflows?style=flat-square)](../../releases/latest)
+[![release](https://img.shields.io/github/v/release/Iurika-N-T-R/videoFlows?style=flat-square)](../../releases/latest)
 
 vidéoFlows is an independent app written from scratch. It is not affiliated with any short-video platform, nor with VideoLAN.
 
