@@ -16,8 +16,8 @@ android {
         applicationId = "com.iurika.videoflows"
         minSdk = 24
         targetSdk = 35
-        versionCode = 5
-        versionName = "0.0.5"
+        versionCode = 6
+        versionName = "0.0.6"
         // ponytail: 64-bit only keeps the APK small; add "armeabi-v7a" (or ABI splits) for old 32-bit phones
         ndk { abiFilters += listOf("arm64-v8a", "x86_64") }
     }
