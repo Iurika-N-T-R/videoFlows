@@ -185,6 +185,7 @@ class MainActivity : Activity() {
         setContentView(R.layout.activity_main)
         @Suppress("DEPRECATION") window.statusBarColor = 0xff000000.toInt()
         @Suppress("DEPRECATION") window.navigationBarColor = 0xff000000.toInt()
+        Thumbs.init(this)
         vlc = LibVLC(this)
         player = MediaPlayer(vlc).apply { videoScale = MediaPlayer.ScaleType.SURFACE_FIT_SCREEN }
         load()
@@ -431,7 +432,7 @@ class MainActivity : Activity() {
         header("Dossiers", "Gérer") { goPage("library") }
         add(grid(lib.groupBy { it.folder }.toSortedMap(String.CASE_INSENSITIVE_ORDER).map { (f, vs) ->
             vbox(
-                grid((0 until 4).map { k -> View(this).apply { background = vs.getOrNull(k)?.let(::gradient) ?: rounded(0xff222222.toInt(), 0) }.lp(-1, dp(59)) }, gap = 2),
+                grid((0 until 4).map { k -> (vs.getOrNull(k)?.let(::thumb) ?: View(this).apply { background = rounded(0xff222222.toInt(), 0) }).lp(-1, dp(59)) }, gap = 2),
                 vbox(
                     hbox(icon(R.drawable.ic_folder, folderColor(f), 16), tv(f.substringAfterLast('/'), 14f, bold = true).apply { maxLines = 1; ellipsize = TextUtils.TruncateAt.END }.lp(l = 6)),
                     tv("${vs.size} vidéos · $f", 12f, MU).apply { maxLines = 1; ellipsize = TextUtils.TruncateAt.END; setPadding(0, dp(3), 0, 0) },
@@ -881,10 +882,17 @@ class MainActivity : Activity() {
         }
     }.toTypedArray()).apply { background = rounded(S2, 10); setPadding(dp(3), dp(3), dp(3), dp(3)) }
 
-    // Thumbnail stand-in: a color from the title, duration, how far it was watched
+    // The video's frame over its color (shown while it loads, or if the file can't be read)
+    private fun thumb(c: Clip) = ImageView(this).apply {
+        background = gradient(c); scaleType = ImageView.ScaleType.CENTER_CROP
+        Thumbs.load(this, c.uri, c.duration)
+    }
+
+    // Thumbnail, duration, how far it was watched
     private fun tile(c: Clip, w: Int, h: Int) = FrameLayout(this).apply {
         background = gradient(c).apply { cornerRadius = dp(8).toFloat() }
         clipToOutline = true
+        addView(thumb(c), FrameLayout.LayoutParams(-1, -1))
         if (c.duration > 0) addView(tv(time(c.duration), 10f, bold = true).apply { background = rounded(0x99000000.toInt(), 4); setPadding(dp(4), 0, dp(4), 0) },
             FrameLayout.LayoutParams(-2, -2, Gravity.END or Gravity.BOTTOM).apply { setMargins(0, 0, dp(4), dp(4)) })
         if (c.pos > 0 && c.duration > 0) addView(View(this@MainActivity).apply { setBackgroundColor(AC) },
